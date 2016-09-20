@@ -2,14 +2,14 @@
 
   $(document).ready(function() {
     
-    function printPosts() { //print posts from localStorage inside container
+    function printPosts(id) { //print posts from localStorage inside container
       var source   = $("#template-post").html();
       console.log('source:' + source );
       var template = Handlebars.compile(source),
           posts = JSON.parse(localStorage.getItem('posts')),
           wrapper = {objects: posts},
           result = template(wrapper),
-          container = document.getElementById('posts');
+          container = document.getElementById(id);
       container.innerHTML = result;
 
     }
@@ -20,7 +20,7 @@
 
     }); // end getJSON
 
-    printPosts();
+    printPosts('posts');
 
   });
 
