@@ -9,6 +9,8 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="js/handlebars.min-latest.js"></script>
     <script src="js/common.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+
 </head>
 <body>
     <div class="container">
@@ -32,7 +34,7 @@
               <!-- HandlebarsJs result will be here -->
             </div> <!-- /#posts -->
             
-            <form id="post-add" class="col-lg-4">
+            <form id="post-add" class="col-lg-4" method="post">
                 <div class="form-group">
                     <input type="text" class="form-control" name="title" placeholder="заголовок">
                 </div>

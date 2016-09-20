@@ -25,3 +25,8 @@
             #posts article footer .tags {
                 margin-bottom: 15px;
             }
+
+#post-add .error {
+    color: #d9534f;
+    font-weight: normal;
+}

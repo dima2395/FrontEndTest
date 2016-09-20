@@ -3,9 +3,8 @@
   $(document).ready(function() {
     
     function printPosts(id) { //print posts from localStorage inside container
-      var source   = $("#template-post").html();
-      console.log('source:' + source );
-      var template = Handlebars.compile(source),
+      var source   = $("#template-post").html(),
+          template = Handlebars.compile(source),
           posts = JSON.parse(localStorage.getItem('posts')),
           wrapper = {objects: posts},
           result = template(wrapper),
@@ -13,11 +12,17 @@
       container.innerHTML = result;
     }
 
-    $.getJSON('../json/posts.json', function(posts) {
-      localStorage.setItem('posts', JSON.stringify(posts)); // add posts to localStorage
-    });
 
-    printPosts('posts'); 
+    if(localStorage.getItem('posts') === null) {
+      $.getJSON('../json/posts.json', function(posts) {
+        localStorage.setItem('posts', JSON.stringify(posts)); // add posts to localStorage
+        printPosts('posts');
+      });
+    } else {
+      printPosts('posts');
+    }
+    
+
 
     $('#posts').on('click', '.btn-delete', function(e) { // delete elements from localStorage and from html on event click
       var $this = $(this),
@@ -33,6 +38,92 @@
       }
     });
 
-  });
+
+
+    $.validator.addMethod( //additional method for jquery Validator plugin
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Please check your input."
+    );
+
+
+    var $form = $('#post-add');
+    $form.validate({ // validating form
+      rules: {
+        title: {
+          required: true,
+          rangelength: [2, 30],
+        },
+        body: {
+          required: true,
+          rangelength: [2, 80]
+        },
+        tags: {
+          required: true,
+          regex: "(^[\sа-яА-Я]+[\s]?,?)+",
+        }
+      },
+      messages: {
+        title: {
+          required: "Пожалуйста введите заголовок",
+          rangelength: "Заголовок должен содержать от 2 до 30 символов",
+        },
+        body: {
+          required: "Пожалуйста введите запись",
+          rangelength: "Запись должна содержать от 2 до 80 символов",
+        },
+        tags: {
+          required: "Пожалуйста введите теги <b>на русском языке</b> через запятую",
+          regex: "Не соответствет шаблону [тег, тег, тег]",
+        }
+      }
+    });
+
+
+    $form.submit(function(e){
+      if($form.valid()) { // valid is jquery Validator plugin's method
+        var title = $('input[name="title"]', $form).val(),
+            body = $('input[name="body"]', $form).val(),
+            tags = $('input[name="tags"]', $form).val(),
+            result = {
+              "id": "",
+              "title": "",
+              "body": "",
+              "tags": [],
+            };
+
+        // preparing values for adding to localStorage
+        title = title.trim().toLowerCase();
+        result['title'] = title.charAt(0).toUpperCase() + title.slice(1) + '.';
+
+        body = body.trim().toLowerCase();
+        result['body'] = body.charAt(0).toUpperCase() + body.slice(1) + '.';
+
+        tags = tags.trim().toLowerCase();
+        if(tags.charAt(tags.length-1) == ',') { //check and remove last comma
+          alert('Ea v if !');
+          tags = tags.slice(0, -1);
+          result['tags'] = tags.split(',');
+        } else {
+          result['tags'] = tags.split(',');
+        }
+
+        posts = JSON.parse(localStorage.getItem('posts'));
+        result['id'] = posts[posts.length-1]['id'] + 1; //takes last post's id and increment it
+        alert('Result:' + ' id - ' + result['id'] + ' title - ' + result['title'] + ' body - ' + result['body'] + ' tags - ' + result['tags']);
+
+        alert('Posts before push: ' + posts);
+        posts.push(result);
+        alert('Posts after push: ' + posts);
+        localStorage.setItem('posts', JSON.stringify(posts));
+        printPosts('posts');
+
+      }
+    })
+
+  }); //function ready end
 
 
