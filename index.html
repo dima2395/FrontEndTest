@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/posts.css">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="js/handlebars.min-latest.js"></script>
     <script src="js/common.js"></script>
 </head>
 <body>
-
     <div class="container">
 
         <header id="header">
@@ -30,23 +30,6 @@
 
             <div id="posts" class="well">
 
-                <article>
-                    <header>
-                        <h3>%заголовок%</h3>
-                    </header>
-                    <section>
-                        <p>%текст%</p>
-                    </section>
-                    <footer>
-                        <div class="tags">
-                            <button class="btn btn-xs btn-default">%тег%</button> <button class="btn btn-xs btn-default">%еще тег%</button>
-                        </div>
-                    </footer>
-                    <div class="controls">
-                        <button class="btn btn-danger btn-mini">удалить</button>
-                    </div>
-                </article>
-
             </div> <!-- /#posts -->
             
             <form id="post-add" class="col-lg-4">
@@ -65,5 +48,27 @@
         </section>
 
     </div>
+    <script id="template-post" type="text/x-handlebars-template">
+      {{#each objects}}
+        <article class="post" data-post-id="{{id}}">
+          <header>
+              <h3>{{ title }}</h3>
+          </header>
+          <section>
+              <p>{{ body }}</p>
+          </section>
+          <footer>
+              {{#each tags}}
+                  <div class="tags">
+                      <button class="btn btn-xs btn-default">{{this}}</button>
+                  </div>
+              {{/each}}
+          </footer>
+          <div class="controls">
+              <button class="btn btn-danger btn-mini">удалить</button>
+          </div>
+        </article>
+      {{/each}}
+    </script>
 </body>
 </html>

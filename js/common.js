@@ -1,20 +1,27 @@
-;(function($) {
+
 
   $(document).ready(function() {
     
+    function printPosts() { //print posts from localStorage inside container
+      var source   = $("#template-post").html();
+      console.log('source:' + source );
+      var template = Handlebars.compile(source),
+          posts = JSON.parse(localStorage.getItem('posts')),
+          wrapper = {objects: posts},
+          result = template(wrapper),
+          container = document.getElementById('posts');
+      container.innerHTML = result;
+
+    }
 
     $.getJSON('../json/posts.json', function(posts) { // get json object 
 
-      for(var i = 0; i < posts.length; i++) {
-        var key = 'post_' + i;
-        localStorage.setItem(key, posts[i]); // add posts to localStorage
-      }
+      localStorage.setItem('posts', JSON.stringify(posts)); // add posts to localStorage
 
     }); // end getJSON
 
-
+    printPosts();
 
   });
 
 
-})(jQuery);
