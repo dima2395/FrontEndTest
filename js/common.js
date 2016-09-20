@@ -104,7 +104,6 @@
 
         tags = tags.trim().toLowerCase();
         if(tags.charAt(tags.length-1) == ',') { //check and remove last comma
-          alert('Ea v if !');
           tags = tags.slice(0, -1);
           result['tags'] = tags.split(',');
         } else {
@@ -113,11 +112,8 @@
 
         posts = JSON.parse(localStorage.getItem('posts'));
         result['id'] = posts[posts.length-1]['id'] + 1; //takes last post's id and increment it
-        alert('Result:' + ' id - ' + result['id'] + ' title - ' + result['title'] + ' body - ' + result['body'] + ' tags - ' + result['tags']);
 
-        alert('Posts before push: ' + posts);
         posts.push(result);
-        alert('Posts after push: ' + posts);
         localStorage.setItem('posts', JSON.stringify(posts));
         printPosts('posts');
 
@@ -125,5 +121,3 @@
     })
 
   }); //function ready end
-
-
