@@ -2,7 +2,7 @@
 
   $(document).ready(function() {
     
-    function printPosts(id) { //print posts from localStorage inside container
+    function printPosts(id) { //print posts from localStorage inside container with id = id
       var source   = $("#template-post").html(),
           template = Handlebars.compile(source),
           posts = JSON.parse(localStorage.getItem('posts')),
