@@ -110,10 +110,16 @@
         tags = tags.trim().toLowerCase();
         if(tags.charAt(tags.length-1) == ',') { //check and remove last comma
           tags = tags.slice(0, -1);
-          result['tags'] = tags.split(',');
-        } else {
-          result['tags'] = tags.split(',');
         }
+        tags = tags.split(',');
+
+        // delete duplicated tags
+        var tmpTags = {};
+        for (var i = 0; i < tags.length; i++) {
+          var key = tags[i].trim();
+          tmpTags[key] = true;
+        }
+        result['tags'] = Object.keys(tmpTags);
 
         posts = JSON.parse(localStorage.getItem('posts'));
         result['id'] = posts[posts.length-1]['id'] + 1; //takes last post's id and increment it
