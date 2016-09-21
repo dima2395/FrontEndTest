@@ -13,7 +13,7 @@
     }
 
 
-    if(localStorage.getItem('posts') === null) {
+    if(localStorage.getItem('posts') === null || localStorage.getItem('posts') === '[]') {
       $.getJSON('../json/posts.json', function(posts) {
         localStorage.setItem('posts', JSON.stringify(posts)); // add posts to localStorage
         printPosts('posts');
